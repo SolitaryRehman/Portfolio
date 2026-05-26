@@ -29,7 +29,7 @@ body {
   position: absolute;
   inset: 0;
 
-  background-image: url("./bg3.webp");
+  background-image: url("../character_anim/2D/Backgrounds/bg3.webp");
   background-size: cover;
   background-position: center;
 

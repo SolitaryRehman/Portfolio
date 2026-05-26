@@ -49,49 +49,49 @@ const animations = {
   char1: {
 
     entry: {
-      image: "assets/char1/entry.png",
+      image: "../character_anim/2D/Character_1/char_1_entry.png",
       frames: 8,
       frameWidth: 350,
       fps: 12
     },
 
     run: {
-      image: "assets/char1/run.png",
+      image: "../character_anim/2D/Character_1/char_1_run.png",
       frames: 10,
       frameWidth: 350,
       fps: 14
     },
 
     attack1: {
-      image: "assets/char1/attack1.png",
+      image: "../character_anim/2D/Character_1/char_1_attack_1.png",
       frames: 8,
       frameWidth: 350,
       fps: 12
     },
 
     block: {
-      image: "assets/char1/block.png",
+      image: "../character_anim/2D/Character_1/char_1_block.png",
       frames: 6,
       frameWidth: 350,
       fps: 10
     },
 
     attack2: {
-      image: "assets/char1/attack2.png",
+      image: "../character_anim/2D/Character_1/char_1_attack_2.png",
       frames: 12,
       frameWidth: 350,
       fps: 14
     },
 
     special1: {
-      image: "assets/char1/special1.png",
+      image: "../character_anim/2D/Character_1/char_1_special_part_1.png",
       frames: 10,
       frameWidth: 350,
       fps: 14
     },
 
     lose: {
-      image: "assets/char1/lose.png",
+      image: "../character_anim/2D/Character_1/char_1_lose.png",
       frames: 10,
       frameWidth: 350,
       fps: 10
@@ -101,56 +101,56 @@ const animations = {
   char2: {
 
     entry: {
-      image: "assets/char2/entry.png",
+      image: "../character_anim/2D/Character_2/char_2_entry.png",
       frames: 8,
       frameWidth: 350,
       fps: 12
     },
 
     block: {
-      image: "assets/char2/block.png",
+      image: "../character_anim/2D/Character_2/char_2_block.png",
       frames: 6,
       frameWidth: 350,
       fps: 10
     },
 
     dash: {
-      image: "assets/char2/dash.png",
+      image: "../character_anim/2D/Character_2/char_2_dash.png",
       frames: 10,
       frameWidth: 350,
       fps: 14
     },
 
     attack1: {
-      image: "assets/char2/attack1.png",
+      image: "../character_anim/2D/Character_2/char_2_attack_1.png",
       frames: 8,
       frameWidth: 350,
       fps: 12
     },
 
     knockdown: {
-      image: "assets/char2/knockdown.png",
+      image: "../character_anim/2D/Character_2/char_2_knockdown.png",
       frames: 10,
       frameWidth: 350,
       fps: 10
     },
 
     jump: {
-      image: "assets/char2/jump.png",
+      image: "../character_anim/2D/Character_2/char_2_jump.png",
       frames: 8,
       frameWidth: 350,
       fps: 12
     },
 
     attack2: {
-      image: "assets/char2/attack2.png",
+      image: "../character_anim/2D/Character_2/char_2_attack_2.png",
       frames: 10,
       frameWidth: 350,
       fps: 14
     },
 
     victory: {
-      image: "assets/char2/victory.png",
+      image: "../character_anim/2D/Character_2/char_2_victory.png",
       frames: 10,
       frameWidth: 350,
       fps: 10
@@ -158,7 +158,7 @@ const animations = {
   },
 
   fire: {
-    image: "assets/effects/fire.png",
+    image: "../character_anim/2D/Character_1/char_1_special_part_2.png",
     frames: 12,
     frameWidth: 250
   }
