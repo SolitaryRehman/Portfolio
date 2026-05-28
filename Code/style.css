@@ -58,20 +58,29 @@ body {
   opacity: 0.7;
 }
 
-/* CHARACTERS */
+/* CHARACTERS
+ *
+ * ⚠️  KEY FIX: NO fixed width or height here.
+ *     JavaScript sets el.style.width = displayFrameW for EACH animation
+ *     because every animation has a different frame size.
+ *     A hardcoded CSS width (e.g. 350px) fights the JS and makes the
+ *     element wider than one frame → adjacent frames bleed through.
+ *
+ *     overflow: hidden is a safety net, but the real clip comes from
+ *     CSS backgrounds always being painted within the element's own box.
+ */
 .character {
   position: absolute;
-
   bottom: 40px;
 
-  width: 350px;
-  height: 350px;
+  /* width & height are set per-frame by JS — do NOT add them here */
 
   background-repeat: no-repeat;
-
   image-rendering: pixelated;
+  overflow: hidden;   /* extra safety: clips any sub-pixel bleed */
 
   z-index: 20;
+  will-change: transform, background-position;
 }
 
 /* CHAR 1 */
@@ -79,34 +88,30 @@ body {
   left: 8%;
 }
 
-/* CHAR 2 */
+/* CHAR 2 — JS always includes scaleX(-1) in its transform string */
 .right {
   right: 8%;
-  transform: scaleX(-1);
+  transform: scaleX(-1); /* initial flip before first scroll event */
 }
 
 /* FIRE EFFECT */
 .fire {
   position: absolute;
 
-  width: 250px;
-  height: 250px;
+  /* width & height also set by JS via setSprite() */
 
   bottom: 100px;
   left: 50%;
 
   opacity: 0;
-
   pointer-events: none;
-
   background-repeat: no-repeat;
 
   z-index: 25;
+  will-change: transform, opacity, background-position;
 }
 
 /* SMOOTH FEEL */
-.character,
-.fire,
 .bg {
-  will-change: transform, background-position;
+  will-change: transform;
 }
