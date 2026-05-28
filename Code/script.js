@@ -1,11 +1,10 @@
-console.log("script.js v5 loaded ✓");
+console.log("script.js v6 loaded ✓");
 
 const char1 = document.getElementById("char1");
 const char2 = document.getElementById("char2");
 const fire  = document.getElementById("fire");
 
 const animations = {
-
   char1: {
     entry:    { image: "../character_anim/2D/Character_1/char_1_entry.png",          frames: 8,  frameWidth: 164, frameHeight: 143 },
     run:      { image: "../character_anim/2D/Character_1/char_1_run.png",            frames: 8,  frameWidth: 147, frameHeight: 164 },
@@ -17,7 +16,6 @@ const animations = {
     lose:     { image: "../character_anim/2D/Character_1/char_1_lose.png",           frames: 5,  frameWidth: 138, frameHeight: 133 },
     get_hit:  { image: "../character_anim/2D/Character_1/char_1_get_hit.png",        frames: 3,  frameWidth: 145, frameHeight: 136 },
   },
-
   char2: {
     intro:     { image: "../character_anim/2D/Character_2/char_2_intro.png",      frames: 20, frameWidth: 128, frameHeight: 113 },
     idle:      { image: "../character_anim/2D/Character_2/char_2_idle.png",       frames: 6,  frameWidth: 73,  frameHeight: 121 },
@@ -29,12 +27,9 @@ const animations = {
     knockdown: { image: "../character_anim/2D/Character_2/char_2_knockdown.png",  frames: 21, frameWidth: 125, frameHeight: 125 },
     victory:   { image: "../character_anim/2D/Character_2/char_2_victory.png",    frames: 15, frameWidth: 102, frameHeight: 130 },
   },
-
   fire: {
-    image:       "../character_anim/2D/Character_1/char_1_special_part_2.png",
-    frames:      13,
-    frameWidth:  133,
-    frameHeight: 68,
+    image: "../character_anim/2D/Character_1/char_1_special_part_2.png",
+    frames: 13, frameWidth: 133, frameHeight: 68,
   }
 };
 
@@ -51,40 +46,51 @@ const timeline = [
 
 const DISPLAY_HEIGHT = 350;
 
-// ─── CORE FIX: use each animation's own frameWidth & frameHeight ─────────────
+// ── NEW: img-based sprite renderer — no background-size/position math ─────────
 function setSprite(el, anim, frame, displayHeight) {
   if (!anim) return;
 
-  // Scale factor derived from THIS animation's actual frame height
-  const scale         = displayHeight / anim.frameHeight;
+  const scale  = displayHeight / anim.frameHeight;
+  const frameW = Math.floor(anim.frameWidth  * scale);   // integer pixels
+  const frameH = Math.floor(displayHeight);
 
-  // Exact pixel width of ONE frame at the display scale
-  const displayFrameW = Math.round(anim.frameWidth * scale);
+  // Container = exactly one frame; overflow:hidden does the clipping
+  el.style.width    = frameW + "px";
+  el.style.height   = frameH + "px";
+  el.style.overflow = "hidden";
+  el.style.backgroundImage = "none";   // kill any leftover CSS background
 
-  // Total sprite-sheet width at display scale
-  const sheetW        = anim.frames * displayFrameW;
+  // Reuse or create the <img> child element
+  let img = el._spriteImg;
+  if (!img) {
+    img = document.createElement("img");
+    img.style.position       = "absolute";
+    img.style.top            = "0";
+    img.style.left           = "0";
+    img.style.imageRendering = "pixelated";
+    img.style.display        = "block";
+    img.draggable            = false;
+    el.appendChild(img);
+    el._spriteImg = img;
+  }
 
-  // ── Size the element to exactly one frame ──────────────────────────────────
-  // This is what clips adjacent frames: the element IS the viewport,
-  // and CSS backgrounds are always clipped to the element's own box.
-  el.style.width              = `${displayFrameW}px`;
-  el.style.height             = `${displayHeight}px`;
+  // Update src only when animation changes (avoids reloads)
+  if (img.dataset.src !== anim.image) {
+    img.src            = anim.image;
+    img.dataset.src    = anim.image;
+  }
 
-  // ── Render the sprite sheet, shifted to show the correct frame ─────────────
-  el.style.backgroundImage    = `url('${anim.image}')`;
-  el.style.backgroundSize     = `${sheetW}px ${displayHeight}px`;
-  el.style.backgroundRepeat   = "no-repeat";
-  el.style.backgroundPosition = `${-(frame * displayFrameW)}px 0px`;
+  // Stretch img to full sheet width; shift left to reveal the correct frame
+  img.style.width  = (anim.frames * frameW) + "px";
+  img.style.height = frameH + "px";
+  img.style.left   = -(frame * frameW) + "px";
 }
 
 function getFrame(anim, progress) {
   return Math.min(anim.frames - 1, Math.floor(progress * anim.frames));
 }
 
-// ─── MAIN UPDATE (called on scroll AND on page load) ─────────────────────────
 function update(overallProg) {
-
-  // Find the active scene (default to last if past all scenes)
   let current = timeline[timeline.length - 1];
   for (const scene of timeline) {
     if (overallProg >= scene.start && overallProg <= scene.end) {
@@ -97,31 +103,25 @@ function update(overallProg) {
     (overallProg - current.start) / (current.end - current.start)
   ));
 
-  /* ── CHAR 1 ── */
   const c1Anim = animations.char1[current.char1];
   if (c1Anim) setSprite(char1, c1Anim, getFrame(c1Anim, localProg), DISPLAY_HEIGHT);
 
-  /* ── CHAR 2 ── */
   const c2Anim = animations.char2[current.char2];
   if (c2Anim) setSprite(char2, c2Anim, getFrame(c2Anim, localProg), DISPLAY_HEIGHT);
 
-  /* ── POSITIONAL MOVEMENT ── */
   let char1X = 0;
   let char2X = 0;
-
   if (current.moveForward) char1X =  localProg * 300;
   if (current.dashLeft)    char2X = -localProg * 250;
 
   char1.style.transform = `translateX(${char1X}px)`;
   char2.style.transform = `translateX(${char2X}px) scaleX(-1)`;
 
-  /* ── JUMP ARC ── */
   if (current.char2 === "jump") {
     const jumpY = Math.sin(localProg * Math.PI) * -250;
     char2.style.transform = `translate(${char2X}px, ${jumpY}px) scaleX(-1)`;
   }
 
-  /* ── FIRE EFFECT ── */
   if (current.fire) {
     const fireAnim = animations.fire;
     setSprite(fire, fireAnim, getFrame(fireAnim, localProg), 250);
@@ -132,12 +132,10 @@ function update(overallProg) {
   }
 }
 
-// ─── SCROLL LISTENER ─────────────────────────────────────────────────────────
 window.addEventListener("scroll", () => {
-  const scrollTop  = window.scrollY;
-  const maxScroll  = document.body.scrollHeight - window.innerHeight;
+  const scrollTop = window.scrollY;
+  const maxScroll = document.body.scrollHeight - window.innerHeight;
   update(scrollTop / maxScroll);
 });
 
-// ─── INIT on page load (frame 0 of scene 0 visible immediately) ──────────────
 document.addEventListener("DOMContentLoaded", () => update(0));

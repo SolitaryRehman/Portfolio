@@ -1,0 +1,36 @@
+.sprite {
+  display: inline-block;
+  background: url('spritesheet.png') no-repeat;
+  width: 129px;
+  height: 113px;
+}
+.sprite-0 { background-position: -0px -0px; }
+.sprite-1 { background-position: -129px -0px; }
+.sprite-2 { background-position: -258px -0px; }
+.sprite-3 { background-position: -387px -0px; }
+.sprite-4 { background-position: -516px -0px; }
+.sprite-5 { background-position: -645px -0px; }
+.sprite-6 { background-position: -774px -0px; }
+.sprite-7 { background-position: -903px -0px; }
+.sprite-8 { background-position: -1032px -0px; }
+.sprite-9 { background-position: -1161px -0px; }
+.sprite-10 { background-position: -1290px -0px; }
+.sprite-11 { background-position: -1419px -0px; }
+.sprite-12 { background-position: -1548px -0px; }
+.sprite-13 { background-position: -1677px -0px; }
+.sprite-14 { background-position: -1806px -0px; }
+.sprite-15 { background-position: -1935px -0px; }
+.sprite-16 { background-position: -2064px -0px; }
+.sprite-17 { background-position: -2193px -0px; }
+.sprite-18 { background-position: -2322px -0px; }
+.sprite-19 { background-position: -2451px -0px; }
+.sprite-20 { background-position: -2580px -0px; }
+.sprite-21 { background-position: -2709px -0px; }
+.sprite-22 { background-position: -2838px -0px; }
+.sprite-23 { background-position: -2967px -0px; }
+.sprite-24 { background-position: -3096px -0px; }
+.sprite-25 { background-position: -3225px -0px; }
+.sprite-26 { background-position: -3354px -0px; }
+.sprite-27 { background-position: -3483px -0px; }
+.sprite-28 { background-position: -3612px -0px; }
+.sprite-29 { background-position: -3741px -0px; }

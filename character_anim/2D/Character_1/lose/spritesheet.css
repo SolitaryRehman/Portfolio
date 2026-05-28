@@ -1,0 +1,11 @@
+.sprite {
+  display: inline-block;
+  background: url('spritesheet.png') no-repeat;
+  width: 138px;
+  height: 123px;
+}
+.sprite-0 { background-position: -0px -0px; }
+.sprite-1 { background-position: -138px -0px; }
+.sprite-2 { background-position: -276px -0px; }
+.sprite-3 { background-position: -414px -0px; }
+.sprite-4 { background-position: -552px -0px; }
